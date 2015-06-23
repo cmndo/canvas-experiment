@@ -1,0 +1,24 @@
+canvas {
+  background: orange;
+}
+
+.content {
+  overflow: hidden;
+  position: relative;
+}
+
+.content-wrapper {
+  color: white;
+  border: solid 1px red;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.parallax-layer {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}

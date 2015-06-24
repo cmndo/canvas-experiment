@@ -1,15 +1,21 @@
-canvas {
-  background: orange;
+* {
+    margin: 0; padding: 0;
+}
+#stage {
+  background: silver;
 }
 
 .content {
   overflow: hidden;
   position: relative;
+  max-width: 500px;
+  padding: 20px;
 }
 
 .content-wrapper {
   color: white;
-  border: solid 1px red;
+  background-color: rgba(255,255,255,0.3);
+  padding: 10px 20px 26px 20px;
   max-width: 400px;
   margin: 0 auto;
 }

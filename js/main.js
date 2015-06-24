@@ -144,6 +144,7 @@ function CanvasDivider(){
             fctx.lineTo(shapes[currShape][i].x, shapes[currShape][i].y);
         }
         fctx.closePath();
+        fctx.strokeStyle = '#ff0000';
         fctx.lineWidth = 2;
         fctx.stroke();
         fctx.clip();
@@ -151,7 +152,7 @@ function CanvasDivider(){
 
         //3. put your image on the clipping mask
         var clipBounds = __catctx.getImageData(0,0, __cat.width, __cat.height)
-        fctx.putImageData(clipBounds, 0, 0);
+        //fctx.putImageData(clipBounds, 0, 0);
 
 
         //4. get image data of the bounding box

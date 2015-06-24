@@ -134,7 +134,7 @@ function CanvasDivider(){
         //2. draw your clipping mask on it
         var fctx = fragment.getContext("2d");
         var currShape = 1;
-        var bounds = getBounds(shapes[currShape]);
+
 
 
         fctx.save();
@@ -150,12 +150,12 @@ function CanvasDivider(){
         fctx.restore();
 
         //3. put your image on the clipping mask
-
         var clipBounds = __catctx.getImageData(0,0, __cat.width, __cat.height)
         fctx.putImageData(clipBounds, 0, 0);
 
 
         //4. get image data of the bounding box
+        var bounds = getBounds(shapes[currShape]);
         var imageData = fctx.getImageData(bounds.x,bounds.y,bounds.width,bounds.height);
 
 

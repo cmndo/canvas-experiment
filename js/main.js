@@ -21,6 +21,27 @@ catImage.onload = function(){
             __catctx = canvas.getContext("2d");
             document.body.appendChild(canvas);
             init();
+
+            //-----------------------cliptest - Test outcome: Works.
+            var cliptest = document.getElementById("cliptest");
+            var ctx = cliptest.getContext("2d");
+
+            //ctx.fillRect(0, 0, 200, 60);
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(10, 10);
+            ctx.lineTo(300, 10);
+            ctx.lineTo(30, 60);
+            ctx.closePath();
+            ctx.clip();
+
+            ctx.drawImage(catImage, 0, 0);
+            ctx.restore();
+
+            var segment = ctx.getImageData(10, 10, 300, 60);
+            console.log(segment);
+            ctx.putImageData(segment, 50, 20);
+
         }
     });
 };
@@ -121,9 +142,6 @@ function CanvasDivider(){
 
 
     this.slice = function(){
-
-
-
         //1. create faux canvas the same size as the screenshot
         var fragment = document.createElement("canvas");
         fragment.height = __cat.height;
@@ -148,12 +166,12 @@ function CanvasDivider(){
         fctx.lineWidth = 2;
         fctx.stroke();
         fctx.clip();
-        fctx.restore();
+
 
         //3. put your image on the clipping mask
-        var clipBounds = __catctx.getImageData(0,0, __cat.width, __cat.height)
+        //var clipBounds = __catctx.getImageData(0,0, __cat.width, __cat.height)
         //fctx.putImageData(clipBounds, 0, 0);
-
+        //fctx.restore();
 
         //4. get image data of the bounding box
         var bounds = getBounds(shapes[currShape]);

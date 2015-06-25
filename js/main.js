@@ -22,25 +22,6 @@ catImage.onload = function(){
             document.body.appendChild(canvas);
             init();
 
-            //-----------------------cliptest - Test outcome: Works.
-            var cliptest = document.getElementById("cliptest");
-            var ctx = cliptest.getContext("2d");
-
-            //ctx.fillRect(0, 0, 200, 60);
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(10, 10);
-            ctx.lineTo(300, 10);
-            ctx.lineTo(30, 60);
-            ctx.closePath();
-            ctx.clip();
-
-            ctx.drawImage(catImage, 0, 0);
-            ctx.restore();
-
-            var segment = ctx.getImageData(10, 10, 300, 60);
-            console.log(segment);
-            ctx.putImageData(segment, 50, 20);
 
         }
     });
@@ -140,8 +121,7 @@ function getBounds(points){
 function CanvasDivider(){
 
 
-
-    this.slice = function(){
+    this.slice = function( currShape, alternate, delay ){
         //1. create faux canvas the same size as the screenshot
         var tempCanvas = document.createElement("canvas");
         tempCanvas.height = __cat.height;
@@ -151,7 +131,6 @@ function CanvasDivider(){
 
         //2. draw your clipping mask on it
         var ctx = tempCanvas.getContext("2d");
-        var currShape = 1;
 
         ctx.save();
         ctx.beginPath();
@@ -179,6 +158,8 @@ function CanvasDivider(){
         var bmpCtx = bmpCanvas.getContext("2d");
         bmpCtx.putImageData(imageData, 0, 0);
         var bmp = new createjs.Bitmap(bmpCanvas);
+        bmp.x = bounds.x;
+        bmp.y = bounds.y;
 
         console.log("frog");
 
@@ -190,12 +171,26 @@ function CanvasDivider(){
 
 
         console.log("at least i know it finished processing this block");
+        setTimeout(function(){
+            if(alternate){
+                TweenLite.to(bmp, 1, {delay: delay, x: bounds.x + 100, y:bounds.y - 180, onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+            }else{
+                TweenLite.to(bmp, 1, {delay: delay, x: bounds.x - 100, y:bounds.y + 180, onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+            }
+        },1400)
     }
 }
 
 function init(){
     __stage = new createjs.Stage("stage");
     canvasDivider = new CanvasDivider();
-    canvasDivider.slice();
+
+    for(var i = 0; i < shapes.length; i++){
+        canvasDivider.slice(i, (i%2==0), i * .1);
+    }
+
+
+
+
 
 }

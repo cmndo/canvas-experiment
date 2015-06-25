@@ -143,49 +143,42 @@ function CanvasDivider(){
 
     this.slice = function(){
         //1. create faux canvas the same size as the screenshot
-        var fragment = document.createElement("canvas");
-        fragment.height = __cat.height;
-        fragment.width = __cat.width;
+        var tempCanvas = document.createElement("canvas");
+        tempCanvas.height = __cat.height;
+        tempCanvas.width = __cat.width;
 
 
 
         //2. draw your clipping mask on it
-        var fctx = fragment.getContext("2d");
+        var ctx = tempCanvas.getContext("2d");
         var currShape = 1;
 
-
-
-        fctx.save();
-        fctx.beginPath();
-        fctx.moveTo(shapes[currShape][0].x, shapes[currShape][0].y);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(shapes[currShape][0].x, shapes[currShape][0].y);
         for(i = 0; i < shapes[currShape].length; i++){
-            fctx.lineTo(shapes[currShape][i].x, shapes[currShape][i].y);
+            ctx.lineTo(shapes[currShape][i].x, shapes[currShape][i].y);
         }
-        fctx.closePath();
-        fctx.strokeStyle = '#ff0000';
-        fctx.lineWidth = 2;
-        fctx.stroke();
-        fctx.clip();
-
+        ctx.closePath();
+        ctx.clip();
 
         //3. put your image on the clipping mask
-        //var clipBounds = __catctx.getImageData(0,0, __cat.width, __cat.height)
-        //fctx.putImageData(clipBounds, 0, 0);
-        //fctx.restore();
+        ctx.drawImage(__cat, 0, 0);
+        ctx.restore();
 
         //4. get image data of the bounding box
         var bounds = getBounds(shapes[currShape]);
-        var imageData = fctx.getImageData(bounds.x,bounds.y,bounds.width,bounds.height);
+        var imageData = ctx.getImageData(bounds.x,bounds.y,bounds.width,bounds.height);
 
 
         //5. paste it into a createjs bitmap
-        var tmpCanvas = document.createElement("canvas");
-        tmpCanvas.width = bounds.width;
-        tmpCanvas.height = bounds.height;
+        var bmpCanvas = document.createElement("canvas");
+        bmpCanvas.width = bounds.width;
+        bmpCanvas.height = bounds.height;
 
-        var tmpCtx = tmpCanvas.getContext("2d");
-        tmpCtx.putImageData(imageData, 0, 0);
-        var bmp = new createjs.Bitmap(tmpCanvas);
+        var bmpCtx = bmpCanvas.getContext("2d");
+        bmpCtx.putImageData(imageData, 0, 0);
+        var bmp = new createjs.Bitmap(bmpCanvas);
 
         console.log("frog");
 

@@ -34,9 +34,16 @@ function TransitionConfigurationInstance(){
         _h,
         _shapes,
         _percentages,
-        _scaledshapes;
+        _scaledshapes,
+        _speed;
 
     return {
+        setSpeed: function(transitionTime){
+            _speed = transitionTime;
+        },
+        getSpeed: function(){
+            return _speed;
+        },
         setShapes: function(width, height, shapes) {
             //set shape sizes for further calculations
             _w = width;
@@ -109,6 +116,12 @@ function TransitionController( tco ){
 
         var tl = new TimelineLite({
             onComplete: function(){
+
+                if(isBackward){
+                    $pool.append($activeContentContainer.html());
+                    $activeContentContainer.html($stagedContentContainer.html());
+                }
+
                 $canvas.hide();
             },
             onUpdate: __stage.update,
@@ -116,7 +129,7 @@ function TransitionController( tco ){
         });
 
         for(var i = 0; i < shapes.length; i++){
-            tl.insert(slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01), isBackward));
+            tl.insert(slice(i, (i%2==0), i * 0.05 + (Math.random() * (shapes.length * .01)), isBackward));
         }
 
         if(!isBackward){
@@ -179,15 +192,15 @@ function TransitionController( tco ){
 
         if(!isBackward){
             if(alternate){
-                return TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Quad.easeIn}, "forward");
+                return TweenLite.to(bmp, _tco.getSpeed(), {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Sine.easeIn}, "forward");
             }else{
-                return TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Quad.easeIn}, "forward" );
+                return TweenLite.to(bmp, _tco.getSpeed(), {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Sine.easeIn}, "forward" );
             }
         }else{
             if(alternate){
-                return TweenLite.from(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Quad.easeIn}, "backward");
+                return TweenLite.from(bmp, _tco.getSpeed(), {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Sine.easeOut}, "backward");
             }else{
-                return TweenLite.from(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Quad.easeIn}, "backward" );
+                return TweenLite.from(bmp, _tco.getSpeed(), {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Sine.easeOut}, "backward" );
             }
         }
     }//end slice

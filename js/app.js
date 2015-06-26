@@ -1,4 +1,5 @@
 var tco = new TransitionConfigurationInstance();
+tco.setSpeed(0.4);
 tco.setShapes(1400, 800, [
     [{
         "x": 2,

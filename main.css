@@ -1,22 +1,59 @@
 * {
     margin: 0; padding: 0;
 }
-.effect {
+body {
+    overflow: hidden;
+    color: white;
+}
+/* Utility */
+.fillscreen {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.top {
+    z-index: 3;
+}
+.bottom {
+    z-index: 2;
+}
+.hidden {
+    display: none;
+}
+/* Goodies */
+canvas.tc-stage {
+    position: absolute;
+    /*background: rgba(0, 0, 0, 0.3);*/
+    z-index: 999;
+    top: 0;
+    left: 0;
+    display: none;
 }
 
+
+
+
+
+.modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -5;
+}
 .content {
   overflow: hidden;
   position: relative;
-  max-width: 500px;
+  width: 1400px;
+  height: 800px;
   padding: 20px;
 }
 
 .content-wrapper {
-  color: white;
   background-color: rgba(255,255,255,0.3);
   padding: 10px 20px 26px 20px;
-  max-width: 400px;
+
   margin: 0 auto;
 }
 

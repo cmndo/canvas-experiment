@@ -1,29 +1,41 @@
 <html>
     <head>
-        <title>Demo of Diagonal Zipper Effect</title>
+        <title>R&amp;D Sports Marketing</title>
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
+        <!-- Active Content -->
+        <div class="active-content fillscreen top"></div>
 
-        <section class="content">
-          <div class="content-wrapper">
-            <p class="preface">The Game</p>
-            <h1 class="title">Without experiences, you're nothing</h1>
-            <p class="reason">Experiences forever bind you to your fans. It's what transforms a company into a brand. You offer expeeriences, build emotion, and create lifelong bonds. Or, you die.</p>
-          </div>
-          <img class="parallax-layer" src="img/300.jpg" alt="" />
-        </section>
+        <!-- Staged Content (aka Next Content) -->
+        <div class="staged-content fillscreen bottom"></div>
 
-        <!-- Easeljs Canvas -->
-        <canvas width=540 height=176 id="stage" class="effect"></canvas>
+        <!-- Sections of the site -->
+        <div class="hidden pool">
+            <section class="home-section">
+                <div class="content-wrapper">
+                    <p class="preface">The Game</p>
+                    <h1 class="title">Without experiences, you're nothing</h1>
+                    <p class="reason">Experiences forever bind you to your fans. It's what transforms a company into a brand. You offer expeeriences, build emotion, and create lifelong bonds. Or, you die.</p>
+                </div>
+                <img class="parallax-layer" src="img/thegame.jpg" alt="" />
+            </section>
+            <section class="work-section">
+                <h1>This is live text</h1>
+                <img class="modal" src="img/kudu_casestudy.jpg" alt="" />
+            </section>
+        </div>
 
+        <!-- We're using a lot of pluggins -->
         <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/plugins/CSSPlugin.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/easing/EasePack.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.17.0/TweenLite.min.js"></script>
         <script src="https://code.createjs.com/createjs-2015.05.21.min.js"></script>
         <script src="js/jquery-2.1.4.min.js"></script>
-        <script src="js/dat.gui.min.js"></script>
         <script src="js/html2canvas.min.js"></script>
-        <script src="js/main.js"></script>
+
+        <!-- Functionality phase 1 -->
+        <script src="js/components/transitioncontroller.js"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>

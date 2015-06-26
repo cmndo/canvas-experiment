@@ -18,10 +18,13 @@ body {
 .bottom {
     z-index: 2;
 }
+.hidden {
+    display: none;
+}
 /* Goodies */
 canvas.tc-stage {
     position: absolute;
-    background: rgba(40, 100, 0, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 999;
     top: 0;
     left: 0;

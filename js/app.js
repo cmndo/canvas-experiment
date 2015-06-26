@@ -211,10 +211,14 @@ tco.setShapes(1400, 800, [
 ]);
 
 var tc = new TransitionController( tco );
-//tc.activeView(document.querySelector(".home-section"));
-// tc.changeView(document.querySelector(".work-section"), {
-//     backward: true
-// });
+tc.activeView(document.querySelector(".home-section"));
+
+//implement transition
+setTimeout(function(){
+    tc.changeView(document.querySelector(".work-section"), {
+        backward: false
+    });
+}, 2000);
 
 //append this TransitionController's canvas element to the screen
 document.body.appendChild(tc.getCanvas());

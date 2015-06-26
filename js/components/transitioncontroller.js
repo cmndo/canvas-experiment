@@ -107,16 +107,27 @@ function TransitionController( tco ){
         __cat = canvas,
         __catctx = canvas.getContext("2d");
 
+        var tl = new TimelineLite({
+            onComplete: function(){
+                $canvas.hide();
+            },
+            onUpdate: __stage.update,
+            onUpdateScope: __stage
+        });
 
         for(var i = 0; i < shapes.length; i++){
-            slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01), isBackward);
+            tl.insert(slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01), isBackward));
         }
 
-        $pool.append($activeContentContainer.html());
-        $activeContentContainer.html($stagedContentContainer.html());
+        if(!isBackward){
+            $pool.append($activeContentContainer.html());
+            $activeContentContainer.html($stagedContentContainer.html());
+        }else{
+            $pool.append($stagedContentContainer.html());
+
+        }
     }
     function slice( currShape, alternate, delay, isBackward ){
-        console.log("slice called")
         //1. create faux canvas the same size as the screenshot
         var tempCanvas = document.createElement("canvas");
         tempCanvas.height = __cat.height;
@@ -146,8 +157,6 @@ function TransitionController( tco ){
         var bounds = utils.getBounds(shapes[currShape]);
         var imageData = ctx.getImageData(bounds.x,bounds.y,bounds.width,bounds.height);
 
-        console.log(bounds);
-
 
         //5. paste it into a createjs bitmap
         var bmpCanvas = document.createElement("canvas");
@@ -161,7 +170,6 @@ function TransitionController( tco ){
         bmp.x = bounds.x;
         bmp.y = bounds.y;
 
-        console.log("frog");
 
         //6. Add to stage
         __stage.addChild(bmp);
@@ -171,13 +179,17 @@ function TransitionController( tco ){
 
         if(!isBackward){
             if(alternate){
-                TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+                return TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Quad.easeIn}, "forward");
             }else{
-                TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+                return TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Quad.easeIn}, "forward" );
+            }
+        }else{
+            if(alternate){
+                return TweenLite.from(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ ease: Quad.easeIn}, "backward");
+            }else{
+                return TweenLite.from(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ ease: Quad.easeIn}, "backward" );
             }
         }
-
-        console.log("at least i know it finished processing this block");
     }//end slice
 
     // api
@@ -192,6 +204,8 @@ function TransitionController( tco ){
             $activeContentContainer.html(element);
         },
         changeView: function(element, options){
+
+
             options = options || {
                 backward: false
             };
@@ -201,12 +215,15 @@ function TransitionController( tco ){
             //place the next content into it's staging container
             $stagedContentContainer.html(element);
 
+            // choose what continer to snapshop
+            var snapContainer = (options.backward) ? $stagedContentContainer[0] : $activeContentContainer;
+
             //take a screenshot of the activeContentContainer
-            html2canvas($activeContentContainer[0], {
+            html2canvas(snapContainer, {
                 onrendered: function(canvas) {
 
                     //The Magic starts right here.
-                    beginTransition(canvas, options.backwards);
+                    beginTransition(canvas, options.backward);
                 }
             });
         }

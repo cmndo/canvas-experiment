@@ -224,7 +224,7 @@ setTimeout(function(){
     setTimeout(function(){
 
         tc.changeView(document.querySelector(".home-section"), {
-            backward: false
+            backward: true
         });
 
     }, 4000);

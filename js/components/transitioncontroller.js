@@ -108,7 +108,7 @@ function TransitionController( tco ){
 
 
         for(var i = 0; i < shapes.length; i++){
-            slice(i, (i%2==0), Math.random() * (shapes.length * .01));
+            slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01));
         }
     }
     function slice( currShape, alternate, delay ){
@@ -166,13 +166,10 @@ function TransitionController( tco ){
         __stage.update();
 
 
-
-
-
         if(alternate){
-            TweenLite.to(bmp, 5, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Expo.easeInOut} );
+            TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
         }else{
-            TweenLite.to(bmp, 5, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Expo.easeInOut} );
+            TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
         }
         console.log("at least i know it finished processing this block");
     }//end slice

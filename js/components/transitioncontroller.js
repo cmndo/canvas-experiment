@@ -1,54 +1,74 @@
 function TransitionConfigurationInstance(){
-    var _w, _h, _shapes, _percentages, _scaledshapes;
+    var _w,
+        _h,
+        _shapes,
+        _percentages,
+        _scaledshapes;
 
     return {
         setShapes: function(width, height, shapes) {
-            //generate a set of percentages to use instead
+            //set shape sizes for further calculations
             _w = width;
             _h = height;
             _shapes = shapes;
 
             //generate percentages
+            _percentages = [];
             for (var i = 0, tmpShape; i < _shapes.length; i++){
                 tmpShape = [];
-                for(var j = 0; j <shapes[i].length; j++){
+                for(var j = 0; j <_shapes[i].length; j++){
                     tmpShape.push({
-                        x: shapes[i][j].x / _w,
-                        y: shapes[i][j].y / _h
+                        x: _shapes[i][j].x / _w,
+                        y: _shapes[i][j].y / _h
                     });
                 }
                 _percentages.push(tmpShape);
             }
         },
-        getShapePercentages: function(){
+        getScaledShapes: function(w, h){
             // _scaledshapes
-            var $content = $(__content);
-        	__canvas.width = $content.width();
-        	__canvas.height = $content.height();
-
-        	for (var i = 0; i < shapePercs.length; i++){
-        		//
+            _scaledshapes = []
+            for (var i = 0; i < _shapes.length; i++){
+        		//loop through points and build shapes based on the size we have
         		var tmpShape = [];
-        		for(var j = 0; j < shapePercs[i].length; j++){
+        		for(var j = 0; j < _shapes[i].length; j++){
         			tmpShape.push({
-        				x: shapePercs[i][j].x * $content.width(),
-        				y: shapePercs[i][j].y * $content.height()
+        				x: _shapes[i][j].x * w,
+        				y: _shapes[i][j].y * h
         			});
         		}
-        		shapes.push(tmpShape);
-
+        		_scaledshapes.push(tmpShape);
         	}
+            return _scaledshapes;
         }
     }
 }
 function TransitionController( tco ){
-    var _tco = tco;
+    //declare
+    var _tco = tco,
+        $win = $(window),      //   This class
+        $doc = $(document),   //    has a whole lot of
+        $bod = $('body'),    //     control
+        __canvas = document.createElement("canvas"),
+        $canvas = $(__canvas);
+        __stage = new createjs.Stage(__canvas),
+        resizeCanvas = function(){
+            __canvas.width = $doc.width();
+            __canvas.height = $doc.height();
+        };
 
-    //keep track of window resizing.
-    var $win = $(window),
-        $doc = $(document);
+    // construct
+    $canvas.addClass("tc-stage");
+    resizeCanvas();
+    $win.resize(resizeCanvas);
 
+    
+
+    // api
     return {
+        getCanvas: function(){
+            return __canvas;
+        },
         setTCO: function( tco ){
             _tco = tco;
         },
@@ -60,16 +80,13 @@ function TransitionController( tco ){
                 backward: false
             };
             //do something to the query object
-            var $query = $(query);
+            var $elem = $(element);
 
-            //get the shapes that will fit the screen's
-            var shapes = tco.getShapePercentages($doc.width(), $doc.height());
-
-
-
-
+            //get the shapes that will fit the screen dimensions
+            var shapes = tco.getScaledShapes($doc.width(), $doc.height());
         }
-    };
+
+    }
 
 }
 

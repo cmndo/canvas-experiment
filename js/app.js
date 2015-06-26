@@ -1,4 +1,4 @@
-var tco = new transitionConfigurationInstance();
+var tco = new TransitionConfigurationInstance();
 tco.setShapes(1400, 800, [
     [{
         "x": 2,
@@ -208,10 +208,15 @@ tco.setShapes(1400, 800, [
         "x": 1132,
         "y": 798
     }]
-];);
+]);
 
 var tc = new TransitionController( tco );
-tc.activeView(document.querySelector(".home-section"));
-tc.changeView(document.querySelector(".work-section"), {
-    backward: true
-});
+//tc.activeView(document.querySelector(".home-section"));
+// tc.changeView(document.querySelector(".work-section"), {
+//     backward: true
+// });
+
+//append this TransitionController's canvas element to the screen
+document.body.appendChild(tc.getCanvas());
+
+console.log("Done with app.js")

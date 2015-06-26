@@ -1,19 +1,37 @@
 * {
     margin: 0; padding: 0;
 }
-.effect {
+body {
+    overflow: hidden;
+}
+/* Utility */
+.fillscreen {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.top {
+    z-index: 3;
+}
+.bottom {
+    z-index: 2;
+}
+/* Goodies */
+canvas.tc-stage {
+    position: absolute;
+    background: rgba(40, 100, 0, 0.3);
+    z-index: 999;
+    top: 0;
+    left: 0;
     display: none;
 }
-.gobtn {
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    position: absolute;
-    top: 555px;
-    left: 170px;
 
-}
+
+
+
+
 .modal {
     position: absolute;
     left: 0;

@@ -84,6 +84,7 @@ function TransitionController( tco ){
         $canvas = $(__canvas),
         $activeContentContainer = $('.active-content'),
         $stagedContentContainer = $('.staged-content'),
+        $pool = $('.pool'),
         shapes,__cat,__catctx;
 
         __stage = new createjs.Stage(__canvas),
@@ -108,10 +109,13 @@ function TransitionController( tco ){
 
 
         for(var i = 0; i < shapes.length; i++){
-            slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01));
+            slice(i, (i%2==0), (.05 * i) + Math.random() * (shapes.length * .01), isBackward);
         }
+
+        $pool.append($activeContentContainer.html());
+        $activeContentContainer.html($stagedContentContainer.html());
     }
-    function slice( currShape, alternate, delay ){
+    function slice( currShape, alternate, delay, isBackward ){
         console.log("slice called")
         //1. create faux canvas the same size as the screenshot
         var tempCanvas = document.createElement("canvas");
@@ -165,12 +169,14 @@ function TransitionController( tco ){
         //7. update stage
         __stage.update();
 
-
-        if(alternate){
-            TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
-        }else{
-            TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+        if(!isBackward){
+            if(alternate){
+                TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x + (tempCanvas.height / 2), y:bounds.y - tempCanvas.height, /*rotation: -70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+            }else{
+                TweenLite.to(bmp, 1.33, {delay: delay, x: bounds.x - (tempCanvas.height / 2), y:bounds.y + tempCanvas.height, /*rotation: 70,*/ onUpdate:__stage.update, onUpdateScope:__stage, ease: Quad.easeIn} );
+            }
         }
+
         console.log("at least i know it finished processing this block");
     }//end slice
 

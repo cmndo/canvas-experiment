@@ -211,16 +211,27 @@ tco.setShapes(1400, 800, [
 ]);
 
 var tc = new TransitionController( tco );
-tc.activeView(document.querySelector(".home-section"));
+tc.activeView(document.querySelector(".home-section")); //pull this element out and put it in the active view container
 
-//implement transition
+//implement transition with a 2000 ms timeout
 setTimeout(function(){
+
     tc.changeView(document.querySelector(".work-section"), {
         backward: false
     });
+
+    //lets try another one
+    setTimeout(function(){
+
+        tc.changeView(document.querySelector(".home-section"), {
+            backward: false
+        });
+
+    }, 4000);
+
 }, 2000);
 
-//append this TransitionController's canvas element to the screen
+//append this TransitionController's canvas element to the body
 document.body.appendChild(tc.getCanvas());
 
-console.log("Done with app.js")
+console.log("Done with app.js");
